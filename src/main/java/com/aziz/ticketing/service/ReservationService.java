@@ -60,6 +60,7 @@ public class ReservationService {
         seatEntity.setStatus(SeatStatus.RESERVED);
         seatEntity.setReservedBy(userId);
         seatEntity.setReservedUntil(now.plusMinutes(holdMinutes));
+        seatEntity.setVersion(seatEntity.getVersion() + 1);
 
         ReservationEntity reservationEntity = new ReservationEntity();
         reservationEntity.setSeat(seatEntity);

@@ -5,6 +5,7 @@ import com.aziz.ticketing.entity.SeatEntity;
 import com.aziz.ticketing.exception.NotFoundException;
 import com.aziz.ticketing.repository.SeatRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
@@ -18,13 +19,13 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public SeatEntity getSeatById(Long id) {
         return seatRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Seat not found: " + id));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public SeatEntity lockAndGetSeatById(Long id) {
         return seatRepository.findForUpdate(id)
                 .orElseThrow(() -> new NotFoundException("Seat not found: " + id));
